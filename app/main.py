@@ -66,30 +66,32 @@ def move():
             if head.index(0) == 0:
                 print 'dont go left'
                 directions.remove('left')
+                print 'directions list', directions
             else: print 'can move left'
             if head.index(0) == 1:
                 print 'dont go up'
                 directions.remove('up')
+                print 'directions list', directions
             else: 'can move up'
 
         if 14 in head: 
             if head.index(14) == 0:
                 print 'dont go right'
                 directions.remove('right')
-            else: print 'can move right'
+                print 'directions list', directions
+            #else: print 'can move right'
             if head.index(14) == 1:
                 print 'dont go down'
                 directions.remove('down')
+                print 'directions list', directions
             else: print 'can move down'
 
         return directions
-                
- 
 
         #check if direction is in directions list 
     
-    def check_next_pos(direction, dont, head):
-        next_pos = [sum(x) for x in zip(head, direction)]
+    def check_next_pos(direc, dont, head, directions):
+        next_pos = [sum(x) for x in zip(head, direc)]
         print 'next position', next_pos
         if next_pos in dont:
             print 'dont go here'
@@ -98,7 +100,7 @@ def move():
             print 'go here'
             return True
 
-    def coordinate_conversion(direction):
+    def vec_to_word(direction):
         up = [0, -1]
         down = [0, 1]
         left = [-1, 0]
@@ -112,16 +114,25 @@ def move():
             return 'left'
         if direction == right:
             return 'right'
+
+    def word_to_vec(direction):
+        up = [0, -1]
+        down = [0, 1]
+        left = [-1, 0]
+        right = [1, 0]
+
+        if direction == 'up':
+            return up
+        if direction == 'down':
+            return down
+        if direction == 'left':
+            return left
+        if direction == 'right':
+            return right
+
         
-
-
-
     directions = ['up', 'down', 'left', 'right']
     direction = 'up'
-
-    directionlist = [[0, -1], [0, 1], [-1, 0], [1,0]]
-
-
 
     print 'turn ', data['turn']
 
@@ -132,69 +143,65 @@ def move():
     dont = []
 
     # my snake head location
-    head = [data["you"]["body"][0]["x"], data["you"]["body"][0]["y"]]
-    print 'Head', head
+    head = [int(data["you"]["body"][0]["x"]), int(data["you"]["body"][0]["y"])]
+    #print 'Head', head
 
     # grow the list of coordinates not to go
     # populate the list with snakes on the board including myself
     # differentiate between me and others??
     # save the head/tail location to see where they are moving??
-    '''for i in data["board"]["snakes"]:
+    for i in data["board"]["snakes"]:
         for j in i['body']:
             pos = [j['x'],j['y']]
-            dont += pos
-    #print dont  
-'''
-    # This isn't working, snake runs into itself 
-    for i in data["you"]["body"]:
-        pos = [i['x'],i['y']]
-        dont.append(pos)
-    print dont, 'DONT'
+            dont.append(pos)
+    #print dont, 'DONT'
     
     # food location
     # change to make this the closest food!!
     food = [data["board"]["food"][0]["x"], data["board"]["food"][0]["y"]]
 
-    '''make a closest food function
-    order the directions based on priority
-'''
+    #make a closest food function
+    #order the directions based on priority
+
     # find food direction 
     negfood = [-x for x in food]
-    dist = [sum(x) for x in zip(head, negfood)]  # this only works for 1 food
-    print 'distance x,y', dist 
+    dist = [sum(x) for x in zip(head, negfood)] # only picks first food in data
+    #print 'distance x,y', dist 
     # return index of max(dist) to decide x or y move
     distabs = [abs(x) for x in dist]
-    print distabs
+    #print distabs
     ind = distabs.index(max(distabs))
-    print 'index', ind
+    #print 'index', ind
 
     direc = [0, 0] # direction vector
     # set the direction vector 
     if dist[ind] < 0:
         direc[ind] = 1
     else: direc[ind] = -1
-    print 'direction vector', direc # pass direc to checkdir function
-
-    # loop this to try all options if none are valid
+    #print 'direction vector', direc # pass direc to checkdir function
 
     # calling check border returns directions with invalid directions removed 
     directions = check_border(head, directions)
-    print 'new directions', directions
+    print 'directions list after check_border()', directions
 
-    isValid = check_next_pos(direc, dont, head)
+    while len(directions) != 0:
+        isValid = check_next_pos(direc, dont, head, directions)
+        
+        if isValid == True:
+            print 'position is valid'
+            validDir = direc
+            direction = vec_to_word(validDir)
+            print 'direction ', direction
+            return move_response(direction)
+        
+        invalidDir = vec_to_word(direc)
+        print 'invalidDir', invalidDir
+        print 'directions list', directions
+        directions.remove(invalidDir)
+        # change the direction vector to something else 
+        direc = word_to_vec(directions[0])
 
-    if isValid == True:
-        print 'position is valid'
-        validdirection = direc
-    else: 
-        print 'invalid'
-        validdirection = [1, 0]     #goes right
 
-    direction = coordinate_conversion(validdirection)
-
-    print 'direction ', direction
-
-    return move_response(direction)
 
 
 @bottle.post('/end')
