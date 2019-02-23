@@ -51,13 +51,8 @@ def move():
     data = bottle.request.json
 
     print(json.dumps(data))
-
-    '''
-    remove a direction from the list if that direction is determined not allowed
-    pass that list of allowed directions to the checkdir function to only evaluate those dirs
-    
-    '''
-    def check_border(head, directions):
+  
+    def check_border(width, height, head, directions):
         # dont is the list of other snakes and my own body
         # head is the head of my snake 
         # direction is the optimal direction that is to be validated
@@ -76,13 +71,14 @@ def move():
                 print 'directions list', directions
             else: 'can move up'
 
-        if 14 in head: 
-            if head.index(14) == 0:
+''' change 14 to width/height from data '''
+        if width in head: 
+            if head.index(width) == 0:
                 print 'dont go right'
                 directions.remove('right')
                 print 'directions list', directions
             #else: print 'can move right'
-            if head.index(14) == 1:
+            if head.index(width) == 1:
                 print 'dont go down'
                 directions.remove('down')
                 print 'directions list', directions
@@ -132,7 +128,10 @@ def move():
         if direction == 'right':
             return right
 
-        
+    width = data['board']['width']
+    height = data['board']['height']
+
+
     directions = ['up', 'down', 'left', 'right']
     direction = 'up'
 
@@ -183,7 +182,7 @@ def move():
     #print 'direction vector', direc # pass direc to checkdir function
 
     # calling check border returns directions with invalid directions removed 
-    directions = check_border(head, directions)
+    directions = check_border(width, height, head, directions)
     print 'directions list after check_border()', directions
 
     while len(directions) != 0:

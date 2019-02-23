@@ -41,4 +41,8 @@ for i in data["board"]["snakes"]:
     for j in i['body']:
         pos = [j['x'],j['y']]
         dont.append(pos)
-print dont, 'DONT'
+#print dont, 'DONT'
+
+
+x = data['board']['width']
+print x
