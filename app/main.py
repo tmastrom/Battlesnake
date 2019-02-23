@@ -50,6 +50,8 @@ def start():
 def move():
     data = bottle.request.json
 
+    print(json.dumps(data))
+
     '''
     remove a direction from the list if that direction is determined not allowed
     pass that list of allowed directions to the checkdir function to only evaluate those dirs
@@ -154,7 +156,7 @@ def move():
         for j in i['body']:
             pos = [j['x'],j['y']]
             dont.append(pos)
-    #print dont, 'DONT'
+    print dont, 'DONT'
     
     # food location
     # change to make this the closest food!!
