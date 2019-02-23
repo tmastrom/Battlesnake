@@ -159,7 +159,8 @@ def move():
     
     # food location
     # change to make this the closest food!!
-    food = [data["board"]["food"][0]["x"], data["board"]["food"][0]["y"]]
+    # account for 'no food on board' case 
+    food = [data["board"]["food"][0]["x"], data["board"]["food"][0]["y"]]       # error index out of range if no food on board    
 
     #make a closest food function
     #order the directions based on priority
