@@ -52,7 +52,7 @@ def move():
 
     print(json.dumps(data))
   
-    def check_border(width, height, head, directions):
+    def check_border(w, h, head, directions):
         # dont is the list of other snakes and my own body
         # head is the head of my snake 
         # direction is the optimal direction that is to be validated
@@ -71,14 +71,14 @@ def move():
                 print 'directions list', directions
             else: 'can move up'
 
-''' change 14 to width/height from data '''
-        if width in head: 
-            if head.index(width) == 0:
+
+        if w in head: 
+            if head.index(w) == 0:
                 print 'dont go right'
                 directions.remove('right')
                 print 'directions list', directions
             #else: print 'can move right'
-            if head.index(width) == 1:
+            if head.index(w) == 1:
                 print 'dont go down'
                 directions.remove('down')
                 print 'directions list', directions
@@ -128,8 +128,8 @@ def move():
         if direction == 'right':
             return right
 
-    width = data['board']['width']
-    height = data['board']['height']
+    width = data['board']['width'] - 1
+    height = data['board']['height'] - 1
 
 
     directions = ['up', 'down', 'left', 'right']
