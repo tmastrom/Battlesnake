@@ -57,8 +57,7 @@ def move():
     # food location
     # change to make this the closest food!!
     # account for 'no food on board' case 
-    food = [data["board"]["food"][0]["x"], data["board"]["food"][0]["y"]]       # error index out of range if no food on board  
-    
+
     width = data['board']['width'] - 1
     height = data['board']['height'] - 1
     directions = ['up', 'down', 'left', 'right']
@@ -66,6 +65,14 @@ def move():
     dont = []
     bad = []    # not ideal positions
     direc = [0, 0] # direction vector
+
+    # handle no food on the board case
+    if data["board"]["food"]:   # no food on the board
+        food = [data["board"]["food"][0]["x"], data["board"]["food"][0]["y"]]       # error index out of range if no food on board  
+        print "no food on board"
+    else:   
+        food = [width/2, height/2]  # go to the middle 
+        
 
     # Todo list 
     # avoid other snake heads
@@ -103,20 +110,23 @@ def move():
 
     def get_dist(head, thing):  # returns direction to move towards the thing
         direc = [0, 0]
-        
+
+        if len(thing) != 2:
+            print 'not a 2 coord list'
+            return direc
+
         # find direction
-        neg = [-x for x in thing]
-        dist = [sum(x) for x in zip(head, neg)] # only picks first food in data
+        neg = [-x for x in thing]   # takes the negative the thing position
+        dist = [sum(x) for x in zip(head, neg)] # distance to thing
                 
         distabs = [abs(x) for x in dist]
-        ind = distabs.index(max(distabs))
+        ind = distabs.index(max(distabs))   # which direction is the furthest
 
         # set the direction vector 
         if dist[ind] < 0:
             direc[ind] = 1
         else: direc[ind] = -1
-        #print 'direction vector', direc # pass direc to checkdir function
-
+        
         return direc
 
     def vec_to_word(direction):
@@ -163,7 +173,7 @@ def move():
     # make a closest food function
     # order the directions based on priority
 
-    direc = get_dist(head, food)
+    direc = get_dist(head, food)    # direction to food 
 
     while len(directions) != 0:
 
