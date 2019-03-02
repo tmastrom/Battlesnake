@@ -50,9 +50,22 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
-
     start = time.time()
+    print 'turn ', data['turn']
 
+    head = [int(data["you"]["body"][0]["x"]), int(data["you"]["body"][0]["y"])]
+    width = data['board']['width'] - 1
+    height = data['board']['height'] - 1
+    directions = ['up', 'down', 'left', 'right']
+    direction = ''
+    dont = []
+
+    bad = []    # not ideal positions
+
+    # Todo list 
+    # avoid other snake heads
+    # prioritize moving towards middle 
+   
     #print(json.dumps(data))
 
     def check_next_pos(direc, dont, head, directions):
@@ -101,23 +114,6 @@ def move():
             return left
         if direction == 'right':
             return right
-
-    width = data['board']['width'] - 1
-    height = data['board']['height'] - 1
-
-
-    directions = ['up', 'down', 'left', 'right']
-    direction = ''
-
-    print 'turn ', data['turn']
-
-    # add board boundaries to the list of places not to go
-    # dont is a list of 2 element lists 
-    dont = []
-
-    # my snake head location
-    head = [int(data["you"]["body"][0]["x"]), int(data["you"]["body"][0]["y"])]
-    #print 'Head', head
 
     # grow the list of coordinates not to go
     # populate the list with snakes on the board including myself
