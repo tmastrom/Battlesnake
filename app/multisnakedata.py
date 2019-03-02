@@ -1,4 +1,8 @@
 #127.0.0.1 - - [22/Feb/2019 18:50:06] "POST /start HTTP/1.1" 200 20
+
+# for quick testing 
+
+
 data = {
     "turn": 0, 
     "game": 

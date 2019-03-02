@@ -54,13 +54,18 @@ def move():
     print 'turn ', data['turn']
 
     head = [int(data["you"]["body"][0]["x"]), int(data["you"]["body"][0]["y"])]
+    # food location
+    # change to make this the closest food!!
+    # account for 'no food on board' case 
+    food = [data["board"]["food"][0]["x"], data["board"]["food"][0]["y"]]       # error index out of range if no food on board  
+    
     width = data['board']['width'] - 1
     height = data['board']['height'] - 1
     directions = ['up', 'down', 'left', 'right']
     direction = ''
     dont = []
-
     bad = []    # not ideal positions
+    direc = [0, 0] # direction vector
 
     # Todo list 
     # avoid other snake heads
@@ -84,6 +89,35 @@ def move():
 
             print 'go here'
             return True
+
+    def prioritize(dont, head, directions):
+        # prioritize the list of directions
+        return False
+
+        # check for snake heads
+        # make a list of snake heads in a 3x3 grid
+        # prioritize away from them if bigger 
+        # prioritize middle of the board 
+
+        # return new directions list
+
+    def get_dist(head, thing):  # returns direction to move towards the thing
+        direc = [0, 0]
+        
+        # find direction
+        neg = [-x for x in thing]
+        dist = [sum(x) for x in zip(head, neg)] # only picks first food in data
+                
+        distabs = [abs(x) for x in dist]
+        ind = distabs.index(max(distabs))
+
+        # set the direction vector 
+        if dist[ind] < 0:
+            direc[ind] = 1
+        else: direc[ind] = -1
+        #print 'direction vector', direc # pass direc to checkdir function
+
+        return direc
 
     def vec_to_word(direction):
         up = [0, -1]
@@ -125,30 +159,11 @@ def move():
             dont.append(pos)
     #print dont, 'DONT'
     
-    # food location
-    # change to make this the closest food!!
     # account for 'no food on board' case 
-    food = [data["board"]["food"][0]["x"], data["board"]["food"][0]["y"]]       # error index out of range if no food on board    
+    # make a closest food function
+    # order the directions based on priority
 
-    #make a closest food function
-    #order the directions based on priority
-
-    # find food direction 
-    negfood = [-x for x in food]
-    dist = [sum(x) for x in zip(head, negfood)] # only picks first food in data
-    #print 'distance x,y', dist 
-    # return index of max(dist) to decide x or y move
-    distabs = [abs(x) for x in dist]
-    #print distabs
-    ind = distabs.index(max(distabs))
-    #print 'index', ind
-
-    direc = [0, 0] # direction vector
-    # set the direction vector 
-    if dist[ind] < 0:
-        direc[ind] = 1
-    else: direc[ind] = -1
-    #print 'direction vector', direc # pass direc to checkdir function
+    direc = get_dist(head, food)
 
     while len(directions) != 0:
 
@@ -171,6 +186,7 @@ def move():
         print 'directions list', directions
         directions.remove(invalidDir)
         # change the direction vector to something else 
+        #directions = prioritize(dont, head, directions)
         direc = word_to_vec(directions[0])
 
 
