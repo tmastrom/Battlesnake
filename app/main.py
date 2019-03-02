@@ -86,7 +86,7 @@ def move():
         print 'next position', next_pos
         
         for i in next_pos:
-            if i not in range(0,15):
+            if i not in range(0,width+1):   
                 print 'not in the boundary'
                 return False
 
