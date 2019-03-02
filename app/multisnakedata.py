@@ -66,3 +66,5 @@ threeby = [[head[0], head[1]-1],
 [head[0]+1, head[1]+1]]
 
 print threeby
+
+print data["you"]["body"][1]

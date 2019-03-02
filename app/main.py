@@ -9,8 +9,7 @@ from api import ping_response, start_response, move_response, end_response
 @bottle.route('/')
 def index():
     return '''
-    Battlesnake documentation can be found at
-       <a href="https://docs.battlesnake.io">https://docs.battlesnake.io</a>.
+    tommy-yum is ready for battle
     '''
 
 @bottle.route('/static/<path:path>')
@@ -43,7 +42,6 @@ def start():
     #print(json.dumps(data))
 
     color = "#8935B9"
-    #color = '#FFFFFFF'
 
     return start_response(color)
 
@@ -74,7 +72,6 @@ def move():
     else:   
         food = [width/2, height/2]  # go to the middle 
         
-
     # Todo list 
     # avoid other snake heads
     # prioritize moving towards middle 
