@@ -63,7 +63,7 @@ def move():
     directions = ['up', 'down', 'left', 'right']
     direction = ''
     dont = []
-    bad = []    # not ideal positions
+    other_snake_heads = []    # not ideal positions
     direc = [0, 0] # direction vector
 
     # handle no food on the board case
@@ -97,16 +97,15 @@ def move():
             print 'go here'
             return True
 
-    def prioritize(dont, head, directions):
-        # prioritize the list of directions
-        return False
+    def prioritize(dont, head, directions, other_snake_heads):
+        # prioritize the list of directions  
 
         # check for snake heads
         # make a list of snake heads in a 3x3 grid
         # prioritize away from them if bigger 
         # prioritize middle of the board 
-
         # return new directions list
+        return False
 
     def get_dist(head, thing):  # returns direction to move towards the thing
         direc = [0, 0]
@@ -168,6 +167,10 @@ def move():
             pos = [j['x'],j['y']]
             dont.append(pos)
     #print dont, 'DONT'
+
+    for i in data["board"]["snakes"]:
+        pos = [i['body'][0]['x'],i['body'][0]['y']]
+        other_snake_heads.append(pos)      
     
     # account for 'no food on board' case 
     # make a closest food function

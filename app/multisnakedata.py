@@ -41,12 +41,15 @@ data = {
                 "name": "me "}}
 
 dont = []
-for i in data["board"]["snakes"]:
+'''for i in data["board"]["snakes"]:
     for j in i['body']:
         pos = [j['x'],j['y']]
         dont.append(pos)
 #print dont, 'DONT'
-
-
+'''
+for i in data["board"]["snakes"]:
+    pos = [i['body'][0]['x'],i['body'][0]['y']]
+    dont.append(pos) 
+print dont
 x = data['board']['width']
 print x
