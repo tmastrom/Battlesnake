@@ -50,58 +50,11 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
-    '''implement a time check 
-    '''
+
     start = time.time()
 
     #print(json.dumps(data))
-    '''  
-    def check_border(w, h, head, directions):
-        # dont is the list of other snakes and my own body
-        # head is the head of my snake 
-        # direction is the optimal direction that is to be validated
-        # directions are the possible directions. Pop from this list if a move is invalid
 
-
-        ## Doesn't handle -1 ###
-        # 1. check if head is at a border and pop invalid directions (one of the coords is 0 or 14)
-
-        for x in head:
-            #if x not in range(w):
-
-            if 0 in head:
-                if head.index(0) == 0:
-                    print 'dont go left'
-                    if 'left' in directions:
-                        directions.remove('left')
-                    print 'directions list', directions
-                else: print 'can move left'
-                if head.index(0) == 1:
-                    print 'dont go up'
-                    if 'up' in directions:
-                        directions.remove('up')
-                    print 'directions list', directions
-                else: 'can move up'
-
-
-            if w in head: 
-                if head.index(w) == 0:
-                    print 'dont go right'
-                    if 'right' in directions:
-                        directions.remove('right')
-                    print 'directions list', directions
-                else: print 'can move right'
-                if head.index(w) == 1:
-                    print 'dont go down'
-                    if 'down' in directions:
-                        directions.remove('down')
-                    print 'directions list', directions
-                else: print 'can move down'
-
-            return directions
-
-        #check if direction is in directions list 
-        '''
     def check_next_pos(direc, dont, head, directions):
         next_pos = [sum(x) for x in zip(head, direc)]
         print 'next position', next_pos
