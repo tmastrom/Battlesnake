@@ -2,6 +2,7 @@ import json
 import os
 import random
 import bottle
+import time
 
 from api import ping_response, start_response, move_response, end_response
 
@@ -49,52 +50,72 @@ def start():
 @bottle.post('/move')
 def move():
     data = bottle.request.json
+    '''implement a time check 
+    '''
+    start = time.time()
 
-    print(json.dumps(data))
-  
+    #print(json.dumps(data))
+    '''  
     def check_border(w, h, head, directions):
         # dont is the list of other snakes and my own body
         # head is the head of my snake 
         # direction is the optimal direction that is to be validated
         # directions are the possible directions. Pop from this list if a move is invalid
 
-         # 1. check if head is at a border and pop invalid directions (one of the coords is 0 or 14)
-        if 0 in head:
-            if head.index(0) == 0:
-                print 'dont go left'
-                directions.remove('left')
-                print 'directions list', directions
-            else: print 'can move left'
-            if head.index(0) == 1:
-                print 'dont go up'
-                directions.remove('up')
-                print 'directions list', directions
-            else: 'can move up'
+
+        ## Doesn't handle -1 ###
+        # 1. check if head is at a border and pop invalid directions (one of the coords is 0 or 14)
+
+        for x in head:
+            #if x not in range(w):
+
+            if 0 in head:
+                if head.index(0) == 0:
+                    print 'dont go left'
+                    if 'left' in directions:
+                        directions.remove('left')
+                    print 'directions list', directions
+                else: print 'can move left'
+                if head.index(0) == 1:
+                    print 'dont go up'
+                    if 'up' in directions:
+                        directions.remove('up')
+                    print 'directions list', directions
+                else: 'can move up'
 
 
-        if w in head: 
-            if head.index(w) == 0:
-                print 'dont go right'
-                directions.remove('right')
-                print 'directions list', directions
-            #else: print 'can move right'
-            if head.index(w) == 1:
-                print 'dont go down'
-                directions.remove('down')
-                print 'directions list', directions
-            else: print 'can move down'
+            if w in head: 
+                if head.index(w) == 0:
+                    print 'dont go right'
+                    if 'right' in directions:
+                        directions.remove('right')
+                    print 'directions list', directions
+                else: print 'can move right'
+                if head.index(w) == 1:
+                    print 'dont go down'
+                    if 'down' in directions:
+                        directions.remove('down')
+                    print 'directions list', directions
+                else: print 'can move down'
 
-        return directions
+            return directions
 
         #check if direction is in directions list 
-    
+        '''
     def check_next_pos(direc, dont, head, directions):
         next_pos = [sum(x) for x in zip(head, direc)]
         print 'next position', next_pos
+        
+        for i in next_pos:
+            if i not in range(0,15):
+                print 'not in the boundary'
+                return False
+
         if next_pos in dont:
             print 'dont go here'
             return False
         else: 
+
             print 'go here'
             return True
 
@@ -133,14 +154,12 @@ def move():
 
 
     directions = ['up', 'down', 'left', 'right']
-    direction = 'up'
+    direction = ''
 
     print 'turn ', data['turn']
 
     # add board boundaries to the list of places not to go
     # dont is a list of 2 element lists 
-    # xaxis = []
-    # yaxis = []
     dont = []
 
     # my snake head location
@@ -155,7 +174,7 @@ def move():
         for j in i['body']:
             pos = [j['x'],j['y']]
             dont.append(pos)
-    print dont, 'DONT'
+    #print dont, 'DONT'
     
     # food location
     # change to make this the closest food!!
@@ -182,11 +201,9 @@ def move():
     else: direc[ind] = -1
     #print 'direction vector', direc # pass direc to checkdir function
 
-    # calling check border returns directions with invalid directions removed 
-    directions = check_border(width, height, head, directions)
-    print 'directions list after check_border()', directions
-
     while len(directions) != 0:
+
+        #print 'directions list after check_border()', directions
         isValid = check_next_pos(direc, dont, head, directions)
         
         if isValid == True:
@@ -194,6 +211,10 @@ def move():
             validDir = direc
             direction = vec_to_word(validDir)
             print 'direction ', direction
+            
+            # execution time 
+            end = time.time()
+            print(end - start)
             return move_response(direction)
         
         invalidDir = vec_to_word(direc)
@@ -202,8 +223,6 @@ def move():
         directions.remove(invalidDir)
         # change the direction vector to something else 
         direc = word_to_vec(directions[0])
-
-
 
 
 @bottle.post('/end')
