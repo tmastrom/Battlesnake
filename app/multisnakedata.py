@@ -50,6 +50,19 @@ dont = []
 for i in data["board"]["snakes"]:
     pos = [i['body'][0]['x'],i['body'][0]['y']]
     dont.append(pos) 
-print dont
+#print dont
 x = data['board']['width']
-print x
+#print x
+
+head = [int(data["you"]["body"][0]["x"]), int(data["you"]["body"][0]["y"])]
+
+threeby = [[head[0], head[1]-1],
+[head[0], head[1]+1],
+[head[0]-1, head[1]],
+[head[0]-1, head[1]-1],
+[head[0]-1, head[1]+1],
+[head[0]+1, head[1]],
+[head[0]+1, head[1]-1],
+[head[0]+1, head[1]+1]]
+
+print threeby

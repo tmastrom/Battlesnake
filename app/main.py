@@ -98,7 +98,31 @@ def move():
             return True
 
     def prioritize(dont, head, directions, other_snake_heads):
-        # prioritize the list of directions  
+        # prioritize the list of directions 
+        # 
+        # if othersnakeheads in 3x3
+        # get dist 
+        # move that dir to  
+
+        threeby = [[head[0], head[1]-1],
+        [head[0], head[1]+1],
+        [head[0]-1, head[1]],
+        [head[0]-1, head[1]-1],
+        [head[0]-1, head[1]+1],
+        [head[0]+1, head[1]],
+        [head[0]+1, head[1]-1],
+        [head[0]+1, head[1]+1]]
+
+        for i in other_snake_heads:
+            if i in threeby:
+                print "DANGER"
+                direc = get_dist(head, i, 'away')
+                if vec_to_word(direc) in directions:
+                    directions.insert(0, vec_to_word(direc))
+                print "move away in direction", directions[0]
+                return directions
+
+        return directions
 
         # check for snake heads
         # make a list of snake heads in a 3x3 grid
@@ -107,7 +131,7 @@ def move():
         # return new directions list
         return False
 
-    def get_dist(head, thing):  # returns direction to move towards the thing
+    def get_dist(head, thing, going):  # returns direction to move towards the thing
         direc = [0, 0]
 
         if len(thing) != 2:
@@ -121,10 +145,16 @@ def move():
         distabs = [abs(x) for x in dist]
         ind = distabs.index(max(distabs))   # which direction is the furthest
 
-        # set the direction vector 
-        if dist[ind] < 0:
-            direc[ind] = 1
-        else: direc[ind] = -1
+        # set the direction vector
+        if going == 'to':       # if you want to go to the thing
+            if dist[ind] < 0:
+                direc[ind] = 1
+            else: direc[ind] = -1
+
+        if going == 'away':      # if you want to go away 
+            if dist[ind] < 0:
+                direc[ind] = -1
+            else: direc[ind] = 1
         
         return direc
 
@@ -176,7 +206,7 @@ def move():
     # make a closest food function
     # order the directions based on priority
 
-    direc = get_dist(head, food)    # direction to food 
+    direc = get_dist(head, food, 'to')    # direction to food 
 
     while len(directions) != 0:
 
@@ -199,7 +229,7 @@ def move():
         print 'directions list', directions
         directions.remove(invalidDir)
         # change the direction vector to something else 
-        #directions = prioritize(dont, head, directions)
+        #directions = prioritize(dont, head, directions, other_snake_heads)
         direc = word_to_vec(directions[0])
 
 
