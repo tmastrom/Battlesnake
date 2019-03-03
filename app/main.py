@@ -200,7 +200,6 @@ def move():
         pos = [i['body'][0]['x'],i['body'][0]['y']]
         other_snake_heads.append(pos)      
     
-    # account for 'no food on board' case 
     # make a closest food function
     # order the directions based on priority
 
